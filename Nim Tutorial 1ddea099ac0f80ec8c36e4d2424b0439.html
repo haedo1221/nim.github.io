@@ -1,0 +1,742 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Nim Tutorial</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(50, 48, 44, 1);
+}
+.highlight-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.highlight-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(248, 248, 247, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(248, 243, 252, 1);
+}
+.block-color-pink_background {
+	background: rgba(252, 241, 246, 1);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: undefined; }
+.select-value-color-pink { background-color: rgba(225, 136, 179, 0.27); }
+.select-value-color-purple { background-color: rgba(168, 129, 197, 0.27); }
+.select-value-color-green { background-color: rgba(123, 183, 129, 0.27); }
+.select-value-color-gray { background-color: rgba(84, 72, 49, 0.15); }
+.select-value-color-transparentGray { background-color: undefined; }
+.select-value-color-translucentGray { background-color: undefined; }
+.select-value-color-orange { background-color: rgba(224, 124, 57, 0.27); }
+.select-value-color-brown { background-color: rgba(210, 162, 141, 0.35); }
+.select-value-color-red { background-color: rgba(244, 171, 159, 0.4); }
+.select-value-color-yellow { background-color: rgba(236, 191, 66, 0.39); }
+.select-value-color-blue { background-color: rgba(93, 165, 206, 0.27); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="1ddea099-ac0f-80ec-8c36-e4d2424b0439" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/gradients_3.png" style="object-position:center 60%"/><div class="page-header-icon page-header-icon-with-cover"><img class="icon" src="Nim_logo.svg"/></div><h1 class="page-title">Nim Tutorial</h1><p class="page-description"></p></header><div class="page-body"><div id="1ddea099-ac0f-81db-8265-fd57194a703b" class="column-list"><div id="1ddea099-ac0f-81dc-b9af-e6dc3e814860" style="width:50%" class="column"><h1 id="1ddea099-ac0f-81ba-b6c2-cfeaec36ec3b" class="">Nim is a compiled, statically typed programming language that allows quick compilation and easy execution. Code can be written in a file with the <code>.nim</code> extension and executed either through compilation or interactively via a REPL.</h1></div><div id="1ddea099-ac0f-81bb-8a45-f91b7f5028eb" style="width:50%" class="column"><p id="1ddea099-ac0f-8140-bea1-fdc7f81cc7fd" class="">
+</p><figure id="1ddea099-ac0f-81ae-80d1-d08e87bac6cc" class="image"><a href="path.png"><img style="width:1654px" src="path.png"/></a></figure></div></div><h2 id="1ddea099-ac0f-80a2-848b-cd6776b7c8db" class=""><strong>1. Entry Point and Code Execution</strong></h2><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1ddea099-ac0f-81bc-93f3-e047139dbf98"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/cursor-click_blue.svg"/></div><div style="width:100%"><strong>Installation</strong>:<p id="1ddea099-ac0f-8089-bb18-f3b18e2efac2" class="">Official instructions: https://nim-lang.org/install.html</p><p id="1ddea099-ac0f-80c0-ad4d-f4b44640879d" class="">Recommended: Install via Choosenim, Nim’s version manager, which simplifies managing different Nim versions.</p></div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1ddea099-ac0f-8142-92f4-f0f957cf7e7e"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/refresh_blue.svg"/></div><div style="width:100%"><strong>Compiling and Running Code</strong>:<p id="1ddea099-ac0f-80e6-92bc-e21f83d83a91" class="">Save your file as <code>hello.nim</code>.</p><p id="1ddea099-ac0f-80d4-9f0d-e120cd27cdd3" class="">Use the command:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80c9-bdd1-c387e7169d57" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">nim c -r hello.nim</code></pre><p id="1ddea099-ac0f-8068-9056-d5214bbc8db6" class="">This compiles the code and immediately runs the resulting binary. The <code>-r</code> flag executes the binary after compilation.</p></div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1ddea099-ac0f-8078-944c-f13b5a7a8fb8"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/sync_blue.svg"/></div><div style="width:100%"><strong>REPL (Read-Eval-Print Loop)</strong>: <p id="1ddea099-ac0f-80bd-8107-f8e3c626857d" class="">Although not fully mature, you can experiment with a Nim REPL using:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8072-a0b4-ccd31ddda958" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">nim secret</code></pre><p id="1ddea099-ac0f-803c-ac84-f9323d3e199b" class="">Alternatively, use third-party tools like <a href="https://github.com/nim-lang/nimble#repl">nim REPL</a>.</p></div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1ddea099-ac0f-80e9-868a-d640fd705694"><div style="font-size:1.5em"><img class="icon" src="https://www.notion.so/icons/confetti-party-popper_blue.svg"/></div><div style="width:100%"><strong>Hello World Example</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8054-8c85-dec1be090db8" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">echo &quot;Hello, World!&quot;</code></pre><p id="1ddea099-ac0f-803e-a72b-f7b20285b0b2" class="">This is the simplest form of output in Nim using the <code>echo</code> procedure.</p></div></figure><h2 id="1ddea099-ac0f-816c-a652-e91eabefdf6a" class=""><strong>2. Input and Output (Simple I/O)</strong></h2><p id="1ddea099-ac0f-80fe-9ebc-c5970c34a71f" class="">Nim provides straightforward syntax for both standard input and output. It uses built-in procedures such as <code>echo</code>, <code>readLine</code>, and <code>stdout.write</code>.</p><ul id="1ddea099-ac0f-8046-bce8-d9684d4ae1f6" class="bulleted-list"><li style="list-style-type:disc"><strong>Output Example</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-804e-bc9a-d7bb1280f634" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">echo &quot;This is a message printed to the console.&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-808f-b629-c9ec5c0f562b" class="bulleted-list"><li style="list-style-type:disc"><strong>Input Example</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80fc-a4f5-dcb8e4004661" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">echo &quot;Enter your name:&quot;
+let name = readLine(stdin)
+echo &quot;Hello, &quot;, name</code></pre></li></ul><ul id="1ddea099-ac0f-80df-a161-ec2063b749ee" class="bulleted-list"><li style="list-style-type:disc"><strong>Using ****</strong><code><strong>stdout.write</strong></code>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-801d-bd48-c49ce06eb52e" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">stdout.write(&quot;This is printed without a newline.&quot;)</code></pre></li></ul><p id="1ddea099-ac0f-80d5-9d07-ff8a71a98c9f" class="">These basic I/O operations allow you to interact with users through the console.</p><h2 id="1ddea099-ac0f-81af-b31c-faf1e453853c" class=""><strong>3. Primitive Data Types and Operators</strong></h2><p id="1ddea099-ac0f-80e7-b769-d91ca8f85930" class="">Nim supports a variety of primitive data types and operators that are commonly used in modern programming.</p><ul id="1ddea099-ac0f-803b-a40d-cfdc8aa53b1b" class="bulleted-list"><li style="list-style-type:disc"><strong>Primitive Data Types</strong>:<ul id="1ddea099-ac0f-808c-a5ec-c7a1fe8fd0df" class="bulleted-list"><li style="list-style-type:circle">Integer types: <code>int</code>, <code>int8</code>, <code>int16</code>, <code>int32</code>, <code>int64</code></li></ul><ul id="1ddea099-ac0f-8044-bc3b-f60b2abe94a3" class="bulleted-list"><li style="list-style-type:circle">Floating-point types: <code>float</code>, <code>float32</code>, <code>float64</code></li></ul><ul id="1ddea099-ac0f-809c-beda-cd17f824307f" class="bulleted-list"><li style="list-style-type:circle">Boolean: <code>bool</code></li></ul><ul id="1ddea099-ac0f-80fa-91c6-ffb7b56dea91" class="bulleted-list"><li style="list-style-type:circle">Character: <code>char</code></li></ul><ul id="1ddea099-ac0f-80b4-8414-efc74fd389ef" class="bulleted-list"><li style="list-style-type:circle">String: <code>string</code></li></ul></li></ul><ul id="1ddea099-ac0f-80b3-8156-ea4e9c9b2411" class="bulleted-list"><li style="list-style-type:disc"><strong>Type System</strong>:<ul id="1ddea099-ac0f-8087-94da-e6dfa7819e90" class="bulleted-list"><li style="list-style-type:circle">Nim is statically typed: types are checked at compile time.</li></ul><ul id="1ddea099-ac0f-80e2-a09b-ea34a224b395" class="bulleted-list"><li style="list-style-type:circle">Strongly typed: implicit type conversions are not allowed unless explicitly defined.</li></ul></li></ul><ul id="1ddea099-ac0f-80c2-adc4-cb27f680243e" class="bulleted-list"><li style="list-style-type:disc"><strong>Operators</strong>:<ul id="1ddea099-ac0f-8087-bcd1-dde6debdea06" class="bulleted-list"><li style="list-style-type:circle">Arithmetic: <code>+</code>, , , <code>/</code>, <code>mod</code></li></ul><ul id="1ddea099-ac0f-806c-a694-e6a6e8999116" class="bulleted-list"><li style="list-style-type:circle">Relational: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></li></ul><ul id="1ddea099-ac0f-8069-bad6-f8c23392ecf6" class="bulleted-list"><li style="list-style-type:circle">Logical: <code>and</code>, <code>or</code>, <code>not</code></li></ul><ul id="1ddea099-ac0f-80ab-8ea5-c41ade9e901a" class="bulleted-list"><li style="list-style-type:circle">Compound assignment: <code>+=</code>, <code>=</code>, etc.</li></ul></li></ul><p id="1ddea099-ac0f-80af-b118-c8528d5035f6" class="">These features provide strong type safety and reduce runtime errors.</p><h2 id="1ddea099-ac0f-81ab-b943-c4ffe6c6eea6" class=""><strong>4. String Handling</strong></h2><p id="1ddea099-ac0f-8029-8745-e7468413e7ce" class="">Strings are immutable sequences of characters in Nim and are handled efficiently. They support a variety of operations.</p><ul id="1ddea099-ac0f-8070-963b-c030a30257a6" class="bulleted-list"><li style="list-style-type:disc"><strong>Creating and Concatenating Strings</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8066-a486-c86d82857a69" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">let name = &quot;Nim&quot;
+let message = &quot;Hello, &quot; &amp; name
+echo message</code></pre></li></ul><ul id="1ddea099-ac0f-80d1-9807-fcc753586f4a" class="bulleted-list"><li style="list-style-type:disc"><strong>Slicing</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80d3-ac00-d405d3dc44ff" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">let sub = message[0..4]  # Extracts &quot;Hello&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-80fe-9c99-f1ce0fec6d77" class="bulleted-list"><li style="list-style-type:disc"><strong>Repetition</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-802e-87b3-fb51ca75fada" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">let stars = repeat(&quot;*&quot;, 5)  # Produces &quot;*****&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-80fc-a827-c2564cbbd4df" class="bulleted-list"><li style="list-style-type:disc"><strong>Immutability</strong>:<ul id="1ddea099-ac0f-80bd-a6e9-c7917bc1f6c7" class="bulleted-list"><li style="list-style-type:circle">Strings in Nim are immutable. Any modification results in a new string being created.</li></ul></li></ul><p id="1ddea099-ac0f-80c3-9b87-cc03fe7c9f58" class="">Understanding string behavior is crucial for tasks like text processing and memory-efficient applications.</p><h2 id="1ddea099-ac0f-801e-93cb-dc83fda591a6" class=""><strong>5. Built-in Data Structures</strong></h2><p id="1ddea099-ac0f-8071-b59d-f1bee6735e5c" class="">Nim provides several built-in data structures for various tasks, including arrays, sequences, sets, and tables.</p><ul id="1ddea099-ac0f-8061-ae9c-f1879f4b8597" class="bulleted-list"><li style="list-style-type:disc"><strong>Arrays</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-805e-9a2f-cff9de488c1c" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">var nums: array[3, int] = [1, 2, 3]</code></pre></li></ul><ul id="1ddea099-ac0f-80de-a2eb-f20a89cab200" class="bulleted-list"><li style="list-style-type:disc"><strong>Sequences (Resizable Arrays)</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8034-8c5a-f5bdb99a8013" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">var seqs = @[1, 2, 3]
+seqs.add(4)</code></pre></li></ul><ul id="1ddea099-ac0f-8033-8fcd-e41dcb562ff7" class="bulleted-list"><li style="list-style-type:disc"><strong>Sets</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8065-93ce-fe32e3ac69d7" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">var alphabet: set[char] = {&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;}</code></pre></li></ul><ul id="1ddea099-ac0f-8013-9379-dda25142c88e" class="bulleted-list"><li style="list-style-type:disc"><strong>Hash Tables (Dictionaries)</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8030-97ea-d8007b1c22fd" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">import tables
+var info = {&quot;language&quot;: &quot;Nim&quot;, &quot;type&quot;: &quot;compiled&quot;}.toTable
+echo info[&quot;language&quot;]</code></pre></li></ul><ul id="1ddea099-ac0f-80d3-b45e-e2ba21fbf4da" class="bulleted-list"><li style="list-style-type:disc"><strong>Destructuring and Pattern Matching</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-807b-865a-fa998423f284" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">let (a, b) = (10, 20)
+echo a, &quot;, &quot;, b</code></pre></li></ul><p id="1ddea099-ac0f-80d2-a9e2-d4243a0699d1" class="">These structures allow flexible and powerful data organization in programs.</p><h2 id="1ddea099-ac0f-8070-bc94-c8153e0d8de2" class=""><strong>6. Control Structures</strong></h2><p id="1ddea099-ac0f-80ed-b879-f02212e52843" class="">Control structures in Nim include conditional branching, pattern matching, and loop constructs.</p><ul id="1ddea099-ac0f-8012-9d00-df4c7098c8d2" class="bulleted-list"><li style="list-style-type:disc"><strong>If-Elif-Else</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8093-956a-e17d36ecc056" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">if x &gt; 0:
+  echo &quot;Positive&quot;
+elif x == 0:
+  echo &quot;Zero&quot;
+else:
+  echo &quot;Negative&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-80c6-839e-ff30513813ec" class="bulleted-list"><li style="list-style-type:disc"><strong>Case Statement</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-804a-bb18-e3881dc4563a" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">case x
+of 1: echo &quot;One&quot;
+of 2: echo &quot;Two&quot;
+else: echo &quot;Other&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-8031-ab64-d57acc8db858" class="bulleted-list"><li style="list-style-type:disc"><strong>Loops</strong>:<ul id="1ddea099-ac0f-801a-a308-f12c128f3346" class="bulleted-list"><li style="list-style-type:circle">For loop:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-801d-98c1-eacd4b1905ae" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">for i in 0..4:
+  echo i</code></pre></li></ul><ul id="1ddea099-ac0f-80a4-bdbe-f07dee096cff" class="bulleted-list"><li style="list-style-type:circle">While loop:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-800d-af35-c310b934978b" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">var i = 0
+while i &lt; 5:
+  echo i
+  inc(i)</code></pre></li></ul></li></ul><ul id="1ddea099-ac0f-80ba-88fb-e18637778313" class="bulleted-list"><li style="list-style-type:disc"><strong>Loop Control</strong>:<ul id="1ddea099-ac0f-80c8-a8e5-f51d269f0f5b" class="bulleted-list"><li style="list-style-type:circle"><code>break</code>, <code>continue</code>, and <code>return</code> are all supported in appropriate contexts.</li></ul></li></ul><p id="1ddea099-ac0f-8001-b6ad-e0fb20c8e50c" class="">These structures form the foundation of structured programming in Nim.</p><h2 id="1ddea099-ac0f-8004-b587-eb8418413d43" class=""><strong>7. Functions and Scoping</strong></h2><p id="1ddea099-ac0f-8053-869a-de33b97776a2" class="">Functions in Nim are first-class citizens and support various advanced features like default parameters, varargs, and closures.</p><ul id="1ddea099-ac0f-800f-ac12-d06dbb9589a3" class="bulleted-list"><li style="list-style-type:disc"><strong>Defining and Calling Functions</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-803d-99d8-d08fe65560fc" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">proc greet(name: string): string =
+  return &quot;Hello, &quot; &amp; name
+
+echo greet(&quot;Nim&quot;)</code></pre></li></ul><ul id="1ddea099-ac0f-80b8-9167-c5ec5027310a" class="bulleted-list"><li style="list-style-type:disc"><strong>Default Parameters and Varargs</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8084-a673-f4cc4c759a8a" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">proc say(msg: string = &quot;Hi&quot;) =
+  echo msg
+
+proc printAll(args: varargs[string]) =
+  for a in args:
+    echo a</code></pre></li></ul><ul id="1ddea099-ac0f-8072-b9d3-f6c53359deec" class="bulleted-list"><li style="list-style-type:disc"><strong>Anonymous and Higher-order Functions</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-801a-904f-c3cdcdd23305" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">let double = proc(x: int): int = x * 2
+echo double(4)</code></pre></li></ul><ul id="1ddea099-ac0f-80e6-bb7e-cca6f1805c1c" class="bulleted-list"><li style="list-style-type:disc"><strong>Closures and Scope</strong>:<ul id="1ddea099-ac0f-80d5-84d6-c19efd9a2ffc" class="bulleted-list"><li style="list-style-type:circle">Nim uses lexical scoping.</li></ul><ul id="1ddea099-ac0f-8071-9806-d4e2e9678bed" class="bulleted-list"><li style="list-style-type:circle">Inner functions can capture variables from enclosing scopes.</li></ul></li></ul><p id="1ddea099-ac0f-80b0-8734-f655ddf09e54" class="">These features allow for flexible functional-style programming in Nim.</p><h2 id="1ddea099-ac0f-80f4-ae05-cc86d1c03aa4" class=""><strong>8. User-Defined Types</strong></h2><p id="1ddea099-ac0f-80b4-88dc-cdb4a8d69423" class="">Nim supports defining custom types using <code>object</code>, similar to structs in C or records in Pascal.</p><ul id="1ddea099-ac0f-806a-84df-e5ca29c80065" class="bulleted-list"><li style="list-style-type:disc"><strong>Defining and Using Objects</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80ee-9ee8-e0d62ca01c89" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">type Person = object
+  name: string
+  age: int
+
+var p = Person(name: &quot;Alice&quot;, age: 30)
+echo p.name, &quot; is &quot;, p.age, &quot; years old.&quot;</code></pre></li></ul><p id="1ddea099-ac0f-8097-82c2-e6983ba56165" class="">Custom types improve code organization and are essential for larger programs.</p><h2 id="1ddea099-ac0f-80bb-88cb-d50be2693187" class=""><strong>9. Modularization</strong></h2><p id="1ddea099-ac0f-80df-8f8f-f5ab5b33f3eb" class="">Nim encourages code modularity by supporting modules, imports, and package organization.</p><ul id="1ddea099-ac0f-807f-a33f-c71e4a4f2cf6" class="bulleted-list"><li style="list-style-type:disc"><strong>Creating a Module</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8026-9a89-cab113236f94" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all"># greet.nim
+proc hello() = echo &quot;Hello from module&quot;</code></pre></li></ul><ul id="1ddea099-ac0f-806f-9918-fc801838465f" class="bulleted-list"><li style="list-style-type:disc"><strong>Using a Module</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80e9-ba8e-e909119e8357" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">import greet
+hello()</code></pre></li></ul><ul id="1ddea099-ac0f-809b-a94a-e38cf87c18a1" class="bulleted-list"><li style="list-style-type:disc"><strong>Organizing Projects</strong>:<ul id="1ddea099-ac0f-8036-97ac-d7a97fd4720e" class="bulleted-list"><li style="list-style-type:circle">Use folders and files with consistent naming.</li></ul><ul id="1ddea099-ac0f-80bc-bfc9-d861b0dfa9ff" class="bulleted-list"><li style="list-style-type:circle">Export procedures using  symbol, e.g., <code>proc hello*()</code>.</li></ul></li></ul><p id="1ddea099-ac0f-80b8-b0eb-e7c58d77565a" class="">Modular programming promotes code reuse and maintainability.</p><h2 id="1ddea099-ac0f-81cd-a899-fc19da286f80" class=""><strong>10. Notable Features and Advanced Concepts</strong></h2><p id="1ddea099-ac0f-801b-af55-d083eef8e99b" class="">Nim includes advanced features such as manual memory management, macros, and interoperability with C.</p><ul id="1ddea099-ac0f-8072-a5bd-e8758105a1ad" class="bulleted-list"><li style="list-style-type:disc"><strong>Memory Management</strong>:<ul id="1ddea099-ac0f-80b6-a72d-e7b488cfb721" class="bulleted-list"><li style="list-style-type:circle">Nim uses garbage collection (default).</li></ul><ul id="1ddea099-ac0f-80cb-aa1c-ea7ebb0d5267" class="bulleted-list"><li style="list-style-type:circle">You can switch to ARC/ORC GC using <code>-gc:arc</code> or <code>-gc:orc</code> for more control.</li></ul></li></ul><ul id="1ddea099-ac0f-804e-b6fa-e07d16366516" class="bulleted-list"><li style="list-style-type:disc"><strong>Templates and Macros</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8026-8b4a-c132461b1081" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">template sayHi(name: string): untyped =
+  echo &quot;Hi, &quot;, name
+
+sayHi(&quot;Julia&quot;)</code></pre><ul id="1ddea099-ac0f-808f-9145-ef313e5a5971" class="bulleted-list"><li style="list-style-type:circle">Macros provide compile-time metaprogramming capabilities.</li></ul></li></ul><ul id="1ddea099-ac0f-8088-aaaa-d9c12b4d5d13" class="bulleted-list"><li style="list-style-type:disc"><strong>C Interoperability</strong>:<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-80e2-a7aa-e83dcfd84026" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">{.passC: &quot;-lm&quot;.}  # Link to C&#x27;s math library</code></pre></li></ul><p id="1ddea099-ac0f-801b-983a-d7e3d04c6bb1" class="">These features make Nim suitable for both high-level scripting and low-level systems programming.</p><h2 id="1ddea099-ac0f-8047-8aeb-d37589d9330f" class=""><strong>+Practical Use Case: Number Guessing Game</strong></h2><p id="1ddea099-ac0f-8008-bca6-d3b714dcc1af" class="">This interactive number guessing game demonstrates Nim&#x27;s control structures, user input, random number generation, type conversion, and looping mechanisms.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ddea099-ac0f-8005-9821-fde0ba8bd617" class="code"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">import random
+
+randomize()  # Initializes the random number generator
+let secret = rand(10)  # Generates a random number between 0 and 10
+var guess: int
+
+while true:
+  echo &quot;Guess the number (0-10):&quot;
+  try:
+    guess = parseInt(readLine(stdin))
+    if guess == secret:
+      echo &quot;Correct! The number was &quot;, secret
+      break
+    elif guess &lt; secret:
+      echo &quot;Too low!&quot;
+    else:
+      echo &quot;Too high!&quot;
+  except ValueError:
+    echo &quot;Please enter a valid integer.&quot;</code></pre><p id="1ddea099-ac0f-8061-90df-dc0057af873c" class="">This small game is easy to understand and fun to play — perfect for beginners learning flow control and user interaction in Nim.</p><h2 id="1ddea099-ac0f-803e-9fff-c5c680fb7ad2" class=""><strong>+Language Comparison: Nim vs Python</strong></h2><table id="1ddea099-ac0f-8097-9041-df698629b262" class="simple-table"><tbody><tr id="1ddea099-ac0f-8036-80d2-fff7e128b684"><td id="pVsi" class="">Feature</td><td id="mgDL" class="">Nim</td><td id="~U\=" class="">Python</td></tr><tr id="1ddea099-ac0f-80ef-a290-d8eb5bccddc7"><td id="pVsi" class="">Typing</td><td id="mgDL" class="">Static and strong</td><td id="~U\=" class="">Dynamic and strong</td></tr><tr id="1ddea099-ac0f-80aa-95e4-f9747999ca15"><td id="pVsi" class="">Performance</td><td id="mgDL" class="">Compiled (very fast)</td><td id="~U\=" class="">Interpreted (slower)</td></tr><tr id="1ddea099-ac0f-80d5-a02b-d95d08e4764d"><td id="pVsi" class="">Syntax</td><td id="mgDL" class="">Concise, similar to Pascal/Rust</td><td id="~U\=" class="">Very high-level and readable</td></tr><tr id="1ddea099-ac0f-80e2-8150-cab32eb9c13c"><td id="pVsi" class="">Compilation</td><td id="mgDL" class=""><code>nim c file.nim</code></td><td id="~U\=" class="">None (direct execution)</td></tr><tr id="1ddea099-ac0f-802c-bda6-ef63841296d2"><td id="pVsi" class="">Memory Mgmt</td><td id="mgDL" class="">Optional GC / ARC / ORC</td><td id="~U\=" class="">Automatic GC</td></tr><tr id="1ddea099-ac0f-8043-9821-f12319e618af"><td id="pVsi" class="">Concurrency</td><td id="mgDL" class="">Manual threads + async support</td><td id="~U\=" class="">Threads + asyncio</td></tr><tr id="1ddea099-ac0f-80ef-816c-e9108b20fd9d"><td id="pVsi" class="">Packaging</td><td id="mgDL" class="">Nimble</td><td id="~U\=" class="">pip</td></tr><tr id="1ddea099-ac0f-801c-81aa-dd8c30e44126"><td id="pVsi" class="">Use Cases</td><td id="mgDL" class="">System tools, scripting, games</td><td id="~U\=" class="">Web dev, data science, scripting</td></tr></tbody></table><p id="1ddea099-ac0f-80eb-b6d1-e5afa976a344" class="">Nim offers more control and better performance while retaining readable syntax. It is ideal for cases where speed and safety are required, while Python excels in ease of use and vast library support.</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
